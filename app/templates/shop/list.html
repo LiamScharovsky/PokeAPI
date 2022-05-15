@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2> Products</h2>
+    <hr />
+<div class="card-deck">
+    <div class="col-4">
+        {% for product in products %}
+        <div class="card">
+            <div class="card-header">
+                <p class=" card-text"> {{ product.name }}
+                  <span class = 'float-right'> ${{product.default_price}} </span>  
+                </p>
+            </div>
+            <div class="card-body">
+                <img class='card-img-top' src="{{ product.images[0] }}" alt="{{ product.name }}">
+            </div>
+            <div class="card-footer">
+                <a href="" class ='btn btn-info btn-block'>Add to Cart</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

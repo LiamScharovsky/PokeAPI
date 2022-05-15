@@ -1,0 +1,89 @@
+<!-- Extends functionality from layout -->
+{%extends 'layout.html' %}
+<!-- Grabs everything before block content -->
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        
+        <div class="row">
+            <div class = 'col-3'>
+                <img  class = 'img-fluid'src="https://via.placeholder.com/1000x1000" alt="Profile Image">
+            </div>
+            <div class="col-9"> 
+                <!-- ONLY SENDS DATA TO THE USERS INFO PART OF THE PROFILE -->
+                <form method= 'POST' action = "{{url_for('profile')}} ">
+                    <div class="form-group">
+                        <div class = 'row'>
+                      <div class="col-6">
+                    <input type="text" class="form-control" name="firstName" id="firstName" value = "{{current_user.firstName}}"aria-describedby="helpId" placeholder="First Name">
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form-control" name="lastName" id="lastName" value = "{{current_user.lastName}}"aria-describedby="helpId" placeholder="Last Name">
+                      </div>
+                    </div>                      
+                    </div>
+                    <div class="form-group">
+                      <input type="text"
+                        class="form-control" name="email" id="email" value = "{{current_user.email}}" aria-describedby="helpId" placeholder="Email Address">
+                    </div>
+                    <div class="form-group">
+                        
+                        <input type="password" class="form-control" name="password" id="password" aria-describedby="helpId"
+                            placeholder="Enter Password">
+                    </div>
+                    <div class="form-group">
+                        
+                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" aria-describedby="helpId"
+                            placeholder="Confirm Password">
+                    </div>
+                    <input type="submit" value="Update" class="btn btn-info btn-block">
+                </form>
+                <form action="{{url_for('deleteUser')}}" method = 'POST'>
+                    <input type="submit" value="Delete User" name = 'deleteUser' class="btn btn-danger btn-block">
+                </form>
+            </div>
+        </div>
+        <div class = 'col-12 mt-3'>
+            <!-- ONLY SENDS DATA TO THE BOTTOM PART OF THE PROFILE -->
+            <form method='POST' action = "{{url_for('blogProfile')}}">
+                <div class="row">
+                    <div class="col-10">
+                        <div class="form-group">
+                            <input type="text" class='form-control' name='blogPost' id=" blogpost" area.describedby='helpId'
+                                placeholder="What's on your mind">
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button class='btn btn-info btn-block' type="submit">Post</button>
+                    </div>
+                </div>
+            </form>
+        </div>    
+    
+
+    
+
+    <div class="row">
+        <div class="col-12">
+            <ul class="list-group">
+                {% for post in posts %}
+                <li class="list-group-item mb-4">
+                    {{ post.body }}
+                    <div>
+                        <small>&mdash; {{post.author.firstName}} {{post.author.lastName}}
+                            <span class=float-right>
+                                {{ moment(post.dateCreated).fromNow()}}
+                            </span></small>
+                    </div>
+                </li>   
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- Grabs everything after block content -->
+{% endblock content %} -->

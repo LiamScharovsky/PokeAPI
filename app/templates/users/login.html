@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Login</h2>
+<hr> 
+<!-- Send POST method to the login route -->
+<form method = 'POST' action="{{ url_for('login') }}">
+    <div class="form-group">
+      <input type="email" name="email" class="form-control" placeholder="user@domain.com" aria-describedby="helpId" />
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control" placeholder="Enter Password" aria-describedby="helpId">
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+        <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" name="rememberMe" value="checkedValue" checked>
+            Remember Me
+        </label>
+    </div>
+    <input type = 'submit' class = 'btn btn-info' value = 'Sign In'></button>
+</form>
+{% endblock content %}

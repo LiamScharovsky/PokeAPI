@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>
+    Users</h2>
+<hr />
+
+<ul class="list-group">
+    <!-- For every user -->
+    {% for user in users %}
+    <li class="list-group-item">
+        <!-- Show their first and last name -->
+        {{user.firstName}} {{user.lastName}}
+        <span class="float-right">
+            <!-- If the person signed in currently follows the user -->
+            {% if current_user.isFollowing(user) %}
+            <!-- Gets the userID of the person you're clicking unfollow on -->
+                <a href="{{ url_for('unfollow', user_ID=user.id) }}" class='btn btn-warning'> Unfollow</a>
+            <!-- If the signed in doesn't follow the user -->
+            {% else %}
+                <a href="{{ url_for('follow', user_ID=user.id) }}" class='btn btn-success'> Follow</a>
+            {% endif %}
+        
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

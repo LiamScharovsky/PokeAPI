@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fakebook | Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <!-- Will get navbar.html from snipets folder -->
+        {% include 'snipets/navbar.html' %}
+    </header>
+
+    <main class='my-5'>
+        <div id="content" class='container'>
+            {% with messages = get_flashed_messages(with_categories = true) %}
+                {% if messages %}
+                    {% for category, m in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            <span class="sr-only">Close</span>
+                                        </button>
+                                        <strong>{{ m }}</strong>
+                                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <!-- Jinja Statements that allow to recycle -->
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </main>
+
+    <footer class='bg-dark'>
+        <div id="footerContent" class='container py-5'>
+            <div class='row'>
+                <!-- Footer Links -->
+                <div class='col-4'>
+                    <h3 class='text-white'>Links</h3>
+                    <hr>
+                    <ul class='list-unstyled'>
+                        <li><a class='nav-link text-white' href="#">Home</a></li>
+                        <li><a class='nav-link text-white' href="#">Contact</a></li>
+                        <li><a class='nav-link text-white' href="#">Users</a></li>
+                        <li><a class='nav-link text-white' href="#">Shop</a></li>
+                    </ul>
+                </div>
+                <div class='col-4 offset-4'>
+                    <form>
+                        <div class='form-group'>
+                            <input type="text" class="form-control" name='newsLetter' area-describedby="helpID"
+                                placeholder="Sign up for our news letter">
+                            <input type="button" value="Sign Up" class='btn btn-info mt-3 float-right'>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+        <!-- Now we can access moment from any templace -->
+        {{moment.include_moment()}}
+    </body>
+
+</html>

@@ -1,0 +1,7 @@
+Hi Liam!
+You got a new message.
+Name:{{ data.name }}
+Email: {{ data.email }}
+Budget: {{ data.selection }}
+Message:
+{{ data.message }}

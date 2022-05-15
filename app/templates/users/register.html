@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Register</h2>
+<hr>
+<!-- Send POST method to the register route -->
+    <form method='POST' action="{{url_for('register')}} ">
+        <div class="form-group">
+            <div class='row'>
+                <div class="col-6">
+                    <input type="text" class="form-control" name="firstName" id="firstName"
+                         aria-describedby="helpId" placeholder="First Name">
+                </div>
+                <div class="col-6">
+                    <input type="text" class="form-control" name="lastName" id="lastName" 
+                        aria-describedby="helpId" placeholder="Last Name">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="email" id="email" 
+                aria-describedby="helpId" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+    
+            <input type="password" class="form-control" name="password" id="password" aria-describedby="helpId"
+                placeholder="Enter Password">
+        </div>
+        <div class="form-group">
+    
+            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                aria-describedby="helpId" placeholder="Confirm Password">
+        </div>
+        <input type="submit" value="Sign Up" class="btn btn-info btn-block">
+    </form>
+{% endblock content %}

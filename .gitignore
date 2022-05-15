@@ -1,0 +1,6 @@
+# things that are not uploaded to repository because they are not essential
+__pycache__
+venv
+steps.txt
+#personal file to use as notes
+.env

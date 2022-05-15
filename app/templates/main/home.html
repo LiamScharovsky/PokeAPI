@@ -1,0 +1,57 @@
+<!-- Extends functionality from layout -->
+{%extends 'layout.html' %}   
+<!-- Grabs everything before block content -->
+{% block content %}
+<h2>
+    {% if current_user.is_authenticated %}
+        Hello, {{ current_user.firstName}}!
+    {% else %}
+    Welcome
+    {% endif %}
+
+</h2> 
+
+<div class="row">
+    <div class="col-12">
+        <form method = 'POST'>
+            <div class="row">
+                <div class="col-10">
+                    <div class="form-group">
+                        <input type="text" class='form-control' name='blogPost' id=" blogpost" area.describedby='helpId'
+                            placeholder="What's on your mind">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button class='btn btn-info btn-block' type="submit">Post</button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12">
+                    <ul class="list-group">
+                        <!-- Calls for posts list in main routes -->
+                        {% for post in posts %}
+                        <li class="list-group-item mb-4">
+                            <!-- Uses the the body key -->
+                            {{post.body}}
+                            <div>
+                                <!-- Uses the author key -->
+                                <small>&mdash; {{post.author.firstName}}
+                                    <span class=float-right>
+                                        <!-- uses the date created key -->
+                                        <!-- Use Moment and formNow to mark when the post was created -->
+                                        {{moment(post.dateCreated).fromNow()}}    
+                                    </span>
+                                </small>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+</div>
+<!-- Grabs everything after block content -->
+{% endblock content %}
