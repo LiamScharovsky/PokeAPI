@@ -18,11 +18,11 @@
                 <div class="col-10">
                     <div class="form-group">
                         <input type="text" class='form-control' name='blogPost' id=" blogpost" area.describedby='helpId'
-                            placeholder="What's on your mind">
+                            placeholder="Let's find a pokemon...">
                     </div>
                 </div>
                 <div class="col-2">
-                    <button class='btn btn-info btn-block' type="submit">Post</button>
+                    <button class='btn btn-info btn-block' type="submit">Find Pokemon</button>
                 </div>
             </div>
             <hr />
@@ -30,17 +30,20 @@
                 <div class="col-12">
                     <ul class="list-group">
                         <!-- Calls for posts list in main routes -->
-                        {% for post in posts %}
+                        {% for pokemon in pokemons %}
                         <li class="list-group-item mb-4">
                             <!-- Uses the the body key -->
-                            {{post.body}}
+                            <H4>{{pokemon.name}}</H4>
+                            Height: {{pokemon.height}} stories
+                            Weight: {{pokemon.weight}} stones
+                            Type(s): {{pokemon.type1}} {{pokemon.type2}}
                             <div>
                                 <!-- Uses the author key -->
-                                <small>&mdash; {{post.author.firstName}}
+                                <small>&mdash; {{pokemon.author.firstName}}
                                     <span class=float-right>
                                         <!-- uses the date created key -->
                                         <!-- Use Moment and formNow to mark when the post was created -->
-                                        {{moment(post.dateCreated).fromNow()}}    
+                                        {{moment(pokemon.dateCreated).fromNow()}}    
                                     </span>
                                 </small>
                             </div>

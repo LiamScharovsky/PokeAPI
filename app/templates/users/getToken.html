@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Enter your email to get token</h2>
+<hr>
+<!-- Send POST method to the login route -->
+<form method='POST' action="{{ url_for('getToken') }}">
+    <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="user@domain.com" aria-describedby="helpId" />
+    </div>
+    <div class="form-group">
+        <input type='submit' class='btn btn-info' value='Get Token'></input>
+</form>
+{% endblock content %}

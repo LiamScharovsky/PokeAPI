@@ -9,6 +9,7 @@
         <div class="row">
             <div class = 'col-3'>
                 <img  class = 'img-fluid'src="https://via.placeholder.com/1000x1000" alt="Profile Image">
+                <small>You've been with use since {{current_user.dateCreated.__str__().split(" ")[0]}}!</small>
             </div>
             <div class="col-9"> 
                 <!-- ONLY SENDS DATA TO THE USERS INFO PART OF THE PROFILE -->
@@ -46,19 +47,7 @@
         </div>
         <div class = 'col-12 mt-3'>
             <!-- ONLY SENDS DATA TO THE BOTTOM PART OF THE PROFILE -->
-            <form method='POST' action = "{{url_for('blogProfile')}}">
-                <div class="row">
-                    <div class="col-10">
-                        <div class="form-group">
-                            <input type="text" class='form-control' name='blogPost' id=" blogpost" area.describedby='helpId'
-                                placeholder="What's on your mind">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <button class='btn btn-info btn-block' type="submit">Post</button>
-                    </div>
-                </div>
-            </form>
+            
         </div>    
     
 
@@ -67,13 +56,13 @@
     <div class="row">
         <div class="col-12">
             <ul class="list-group">
-                {% for post in posts %}
+                {% for pokemon in pokemon %}
                 <li class="list-group-item mb-4">
-                    {{ post.body }}
+                    {{ pokemon.name }}
                     <div>
-                        <small>&mdash; {{post.author.firstName}} {{post.author.lastName}}
+                        <small>&mdash; {{pokemon.author.firstName}} {{pokemon.author.lastName}}
                             <span class=float-right>
-                                {{ moment(post.dateCreated).fromNow()}}
+                                {{ moment(pokemon.dateCreated).fromNow()}}
                             </span></small>
                     </div>
                 </li>   

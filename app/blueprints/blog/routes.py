@@ -1,10 +1,13 @@
 # allows to render template from template folder
-import email
 from flask import render_template, current_app as app, request, redirect, url_for, flash
+# from numpy import require
 #current_app gives us access to what app used to be
-from .models import User, Post
+from .models import User, Pokemon
 from flask_login import login_user, logout_user, current_user
 from app import db
+import requests
+import smtplib
+from uuid import uuid4
 
 @app.route('/users')
 def usersList():
@@ -59,25 +62,64 @@ def login():
         return redirect(url_for('home'))       #redirect site to home since they logged in
     return render_template('users/login.html')
 
+
+@app.route('/users/getToken')
+def getToken():
+    
+    return render_template('users/getToken.html')                           #redirect to login
+        
+
+@app.route('/users/getToken', methods=['GET', 'POST'])
+def remember():
+    formData = request.form
+    user = User.query.filter_by(email=formData.get('email')).first()
+    if user is None:
+            flash('That email address does not exist or is incorrect', 'warning')       #flash a message
+            return redirect(url_for('login'))
+    else:
+        randToken = str(uuid4())
+        formData = request.form
+        user = User.query.filter_by(email = formData.get('email')).first()
+        user.token = formData.get(randToken)
+        db.migrate()
+        db.upgrade()
+        message ="Hello! Your secret token is " + randToken 
+        server = smtplib.SMTP("SMPT.gmail.com", 587)        #Server and port
+        server.ehlo()
+        server.starttls()                                     #start the server 
+        server.login("Pokedex@gmail.com", "PokePassword")   #type real in credentials 
+        server.sendmail("Pokedex@gmail.com", user, message)  #from pokedex, to user, with message
+        user = User.query.get(current_user.get_id())
+        #update token
+        
+        return render_template('users/loginToken.html')
+
+@app.route('/users/loginToken', methods = ['GET', 'POST'])
+def loginToken():
+    if request.method == 'POST':
+        formData = request.form
+        #cross reference email to see if it's in thedatabase
+        #compare emails to the one email that was given by the user
+        user = User.query.filter_by(email=formData.get('email')).first()
+         
+        #if email or token is wrong, redirect to login page
+        if user is None or not user.token != (formData.get('token')):
+            flash('That email address or token does not exist or is incorrect', 'warning')       #flash a message
+            return redirect(url_for('login'))                           #redirect to login
+        
+        #log user in
+        login_user(user, remember = formData.get('rememberMe'))  
+        
+        flash ('You have logged in succesfully', 'success')
+        return redirect(url_for('home'))       #redirect site to home since they logged in
+    return render_template('users/login.html')
+
+
 @app.route('/users/logout')
 def logout():
     logout_user()      #logs out user
     flash('You have logged out', 'primary')   #message
     return redirect(url_for('login'))  #takes user to login page
-
-@app.route('/blog/update', methods = ['POST'])
-def blogProfile():
-    if request.method == 'POST':
-        data = request.form.get('blogPost')  # get info from input name
-        #create new post
-        p = Post(body=data, author=current_user.get_id())
-        db.session.add(p)  # stage p to be commited to database
-        db.session.commit()  # commit p to database
-        # what will be displayed, what color
-        flash('Holy Guacamole, you made a post!', 'info')
-        # reroutes the page wherever you want it to go                                             # to dict method for each post in the table
-        return redirect(url_for('profile'))
-
 
 @app.route('/delete', methods =['POST'])
 def deleteUser():
@@ -111,7 +153,7 @@ def register():
             db.session.commit()      #add and commit the new user
 
             login_user(user, remember = True)   #log in the user
-            flash('Welcome to Fakebook!', 'success') 
+            flash('Welcome to your Pokedex!', 'success') 
             return redirect(url_for('home'))  #send them to home
         else:
             flash("Your passwords don't match", 'warning')

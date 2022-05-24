@@ -28,9 +28,6 @@ def createApp(configClass=Config):
         from app.blueprints.main import bp as main_bp  #import blueprint functionality from main __init__
         app.register_blueprint(main_bp)         #register the main bp blueprints
     
-        from app.blueprints.shop import bp as shop_bp #import shop's blueprint
-        app.register_blueprint(shop_bp)             #render the shop_bp blueprint 
-        
         from app.blueprints.blog import bp as blog_bp
         app.register_blueprint(blog_bp)
 

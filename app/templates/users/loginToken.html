@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Login</h2>
+<hr>
+<!-- Send POST method to the login route -->
+<form method='POST' action="{{ url_for('loginToken') }}">
+    <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="user@domain.com" aria-describedby="helpId" />
+    </div>
+    <div class="form-group">
+        <input type="text" name="token" class="form-control" placeholder="Enter token"
+            aria-describedby="helpId">
+    </div>
+    <div class="form-group">
+        <input type='submit' class='btn btn-info' value='Sign In'></input>
+</form>
+{% endblock content %}

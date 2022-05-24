@@ -13,12 +13,16 @@ followers = db.Table(
     db.Column ('followedID', db.String(32), db.ForeignKey('user.id'))  #name of table of whoever the follower is following
 )
 
-class Post(db.Model):
+class Pokemon(db.Model):
     #Makes an ID with SQLALchemy Model as a string with a limit of 32 (same as default), 
     #with a default and it's the primary key
     id = db.Column(db.String(32), primary_key = True)
     #Just a string wiht no limit
-    body = db.Column(db.Text)
+    name = db.Column(db.Text)
+    height = db.Column(db.Text)
+    weight = db.Column(db.Text)
+    type1 = db.Column(db.Text)
+    type2 = db.Column(db.Text)
     #Pass reference of utcnow without () because it does it on it's own
     dateCreated = db.Column(db.DateTime, default=dt.utcnow)
     # Needs to be userID, it's a one to many (One author can have many posts)
@@ -27,7 +31,11 @@ class Post(db.Model):
     def toDict(self):                                   #grab data 
         return {
             'id':self.id,
-            'body': self.body,
+            'name': self.name,
+            'height': self.height,
+            'weight': self.weight,
+            'type1': self.type1,
+            'type2': self.type2,
             'dateCreated': self.dateCreated,
             'author': User.query.get(self.author)
         }
@@ -37,7 +45,7 @@ class Post(db.Model):
         self.id = uuid.uuid4().hex
 
     def __repr__(self):
-        return f'<Post: {self.body[:30]}...>'
+        return f'<Pokemon: {self.body[:30]}...>'
     
 class User(db.Model, UserMixin):
     id = db.Column(db.String(32), primary_key = True)
@@ -47,8 +55,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(50), unique = True)
     password = db.Column(db.String(300))
     #Create relationship with user and post, and cascade
-    posts = db.relationship('Post', backref='posts', cascade = 'all, delete-orphan')
-    
+    pokemons = db.relationship('Pokemon', backref='pokemonss', cascade = 'all, delete-orphan')
+    dateCreated = db.Column(db.DateTime, default=dt.utcnow)
     followed = db.relationship(
         'User', #table that is relevant for the relationship
         secondary = followers, #pass reference of the followers table
@@ -58,14 +66,15 @@ class User(db.Model, UserMixin):
         #lazy = dynamic means data being loaded is lazy loaded (only loads when needed)
         lazy='dynamic'
         )
+    token = db.Column(db.String(50))
     #FOLLOWING STUFF
-    def followedPosts(self):
-        followed = Post.query.join(
+    def followedPokemon(self):
+        followed = Pokemon.query.join(
             followers,
-            (followers.c.followedID == Post.author)
+            (followers.c.followedID == Pokemon.author)
             ).filter(followers.c.followerID == self.id)
-        own = Post.query.filter_by(author=self.id)
-        return followed.union(own).order_by(Post.dateCreated.desc())   
+        own = Pokemon.query.filter_by(author=self.id)
+        return followed.union(own).order_by(Pokemon.dateCreated.desc())   
             #grabs all the posts and filters it only to the ones that the current user
             #follows, then grab users posts and order them by date craeted 
         
@@ -101,6 +110,4 @@ class User(db.Model, UserMixin):
 @login.user_loader
 def loadUser (user_id):             #returns the user based on the user_id that was inputted
     return User.query.get(user_id)
-
-
 
